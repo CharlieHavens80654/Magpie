@@ -1,4 +1,6 @@
-package activity4;
+package activity5;
+
+import java.util.Random;
 
 /**
  * A program to carry on conversations with a human user.
@@ -8,11 +10,11 @@ package activity4;
  *</li><li>
  *         Will transform statements as well as react to keywords
  *</li></ul>
+ * This version uses an array to hold the default responses.
  * @author Laurie White
  * @version April 2012
- *
  */
-public class Magpie4
+public class Eleanor
 {
     /**
      * Get a default greeting     
@@ -43,11 +45,32 @@ public class Magpie4
             response = "Why so negative?";
         }
         else if (findKeyword(statement, "mother") >= 0
-                || findKeyword(statement, "father") >= 0
-                || findKeyword(statement, "sister") >= 0
-                || findKeyword(statement, "brother") >= 0)
+                ||findKeyword(statement, "mom") >= 0)
         {
-            response = "Tell me more about your family.";
+            response = "My mother's name is Anne Hall Roosevelt";
+        }else if (findKeyword(statement, "father") >= 0
+                ||findKeyword(statement, "dad") >= 0)
+        {   
+            response = "My  father's name is Elliot Roosevelt";
+        }else if (findKeyword(statement, "siblings") >= 0
+                ||findKeyword(statement, "sisters") >= 0
+                ||findKeyword(statement, "sister") >= 0
+                ||findKeyword(statement, "sibling") >= 0
+                ||findKeyword(statement, "brother") >= 0
+                ||findKeyword(statement, "brothers") >= 0)
+        {   
+            response = "I have brothers, Elliot and Gracie(Hall). Hall died of scalet fever. I have no sisters.";
+        }else if (findKeyword(statement, "What is your name?") >= 0){
+            response = "My name is Eleanor Roosevelt";
+        }else if (findKeyword(statement, "known for") >= 0
+                || findKeyword(statement, "famous ")  >= 0){
+            response = "I was the first lady of the united states from 1933 to 1945 while my husband was president, and served as first chair on the UN human rights comitee";
+        }else if (findKeyword(statement, "marry") >= 0
+                ||findKeyword(statement, "marriage") >= 0
+                ||findKeyword(statement, "husband") >= 0){
+            response = "I married my husband Franklin Roosevelt in 1905";
+        }else if (findKeyword(statement, "you born?") >= 0){
+            response = "I was born in New York City on October 11th 1884 ";
         }
 
         // Responses which require transformations
@@ -55,13 +78,15 @@ public class Magpie4
         {
             response = transformIWantToStatement(statement);
         }
-        else if (findKeyword(statement, "I Want ", 0) >= 0)
+        //  Part of student solution
+        else if (findKeyword(statement, "I want", 0) >= 0)
         {
             response = transformIWantStatement(statement);
         }
 
         else
         {
+
             // Look for a two word (you <something> me)
             // pattern
             int psn = findKeyword(statement, "you", 0);
@@ -73,7 +98,20 @@ public class Magpie4
             }
             else
             {
-                response = getRandomResponse();
+                //  Part of student solution
+                // Look for a two word (I <something> you)
+                // pattern
+                psn = findKeyword(statement, "i", 0);
+
+                if (psn >= 0
+                        && findKeyword(statement, "you", psn) >= 0)
+                {
+                    response = transformIYouStatement(statement);
+                }
+                else
+                {
+                    response = getRandomResponse();
+                }
             }
         }
         return response;
@@ -100,7 +138,14 @@ public class Magpie4
         String restOfStatement = statement.substring(psn + 9).trim();
         return "What would it mean to " + restOfStatement + "?";
     }
+
     
+    /**
+     * Take a statement with "I want <something>." and transform it into 
+     * "Would you really be happy if you had <something>?"
+     * @param statement the user statement, assumed to contain "I want"
+     * @return the transformed statement
+     */
     private String transformIWantStatement(String statement)
     {
         //  Remove the final period, if there is one
@@ -112,12 +157,10 @@ public class Magpie4
             statement = statement.substring(0, statement
                     .length() - 1);
         }
-        int psn = findKeyword (statement, "I want ", 0);
-        String restOfStatement = statement.substring(psn + 9).trim();
+        int psn = findKeyword (statement, "I want", 0);
+        String restOfStatement = statement.substring(psn + 6).trim();
         return "Would you really be happy if you had " + restOfStatement + "?";
     }
-
-    
     
     /**
      * Take a statement with "you <something> me" and transform it into 
@@ -144,6 +187,30 @@ public class Magpie4
         return "What makes you think that I " + restOfStatement + " you?";
     }
     
+    /**
+     * Take a statement with "I <something> you" and transform it into 
+     * "Why do you <something> me?"
+     * @param statement the user statement, assumed to contain "I" followed by "you"
+     * @return the transformed statement
+     */
+    private String transformIYouStatement(String statement)
+    {
+        //  Remove the final period, if there is one
+        statement = statement.trim();
+        String lastChar = statement.substring(statement
+                .length() - 1);
+        if (lastChar.equals("."))
+        {
+            statement = statement.substring(0, statement
+                    .length() - 1);
+        }
+        
+        int psnOfI = findKeyword (statement, "I", 0);
+        int psnOfYou = findKeyword (statement, "you", psnOfI);
+        
+        String restOfStatement = statement.substring(psnOfI + 1, psnOfYou).trim();
+        return "Why do you " + restOfStatement + " me?";
+    }
     
 
     
@@ -211,31 +278,16 @@ public class Magpie4
      * Pick a default response to use if nothing else fits.
      * @return a non-committal string
      */
-    private String getRandomResponse()
+    private String getRandomResponse ()
     {
-        final int NUMBER_OF_RESPONSES = 4;
-        double r = Math.random();
-        int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
-        String response = "";
-        
-        if (whichResponse == 0)
-        {
-            response = "Interesting, tell me more.";
-        }
-        else if (whichResponse == 1)
-        {
-            response = "Hmmm.";
-        }
-        else if (whichResponse == 2)
-        {
-            response = "Do you really think so?";
-        }
-        else if (whichResponse == 3)
-        {
-            response = "You don't say.";
-        }
-
-        return response;
+        Random r = new Random ();
+        return randomResponses [r.nextInt(randomResponses.length)];
     }
-
+    
+    private String [] randomResponses = {"A woman is like a tea bag; you never know how strong it is until it's in hot water",
+        "Do one thing every day that scares you.",
+        "The future belongs to those who believe in the beauty of their dreams.",
+        "Many people will walk in and out of your life, but only true friends will leave footprints in your heart"
+    };
+    
 }
