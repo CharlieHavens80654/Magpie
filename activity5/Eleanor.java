@@ -60,17 +60,31 @@ public class Eleanor
                 ||findKeyword(statement, "brothers") >= 0)
         {   
             response = "I have brothers, Elliot and Gracie(Hall). Hall died of scalet fever. I have no sisters.";
-        }else if (findKeyword(statement, "What is your name?") >= 0){
-            response = "My name is Eleanor Roosevelt";
+        }else if (findKeyword(statement, "What is your name") >= 0){
+            response = "My name is Anna Eleanor Roosevelt, but I go by Eleanor";
         }else if (findKeyword(statement, "known for") >= 0
-                || findKeyword(statement, "famous ")  >= 0){
-            response = "I was the first lady of the united states from 1933 to 1945 while my husband was president, and served as first chair on the UN human rights comitee";
+                || findKeyword(statement, "famous")  >= 0){
+            response = "I helped draft the Universal Declaration of Human Rights. I was the first lady of the united states from 1933 to 1945 while my husband was president, and served as first chair on the UN human rights comitee";
         }else if (findKeyword(statement, "marry") >= 0
                 ||findKeyword(statement, "marriage") >= 0
                 ||findKeyword(statement, "husband") >= 0){
             response = "I married my husband Franklin Roosevelt in 1905";
-        }else if (findKeyword(statement, "you born?") >= 0){
+        }else if (findKeyword(statement, "you born") >= 0
+                || findKeyword(statement, "live")>= 0
+                || findKeyword(statement, "old")>=0){
             response = "I was born in New York City on October 11th 1884 ";
+        }else if (findKeyword(statement, "languages") >= 0){
+            response = "I speak both English and French";
+        }else if (findKeyword(statement, "sports") >= 0){
+            response = "I played hockey, its my favorite sport";
+        }else if (findKeyword(statement, "degree") >= 0){
+            response = "I have 35 honary degrees from Russell Sage College, JJohn Marshall College of Law, and Oxford University";
+        }else if (findKeyword(statement, "do") >= 0){
+            response = "I love being a lizard person";
+        }else if (findKeyword(statement, "How") >= 0){
+            response = getRandomHowResponse();
+        }else if (findKeyword(statement, "Why") >= 0){
+            response = getRandomWhyResponse();
         }
 
         // Responses which require transformations
@@ -273,8 +287,17 @@ public class Eleanor
     }
     
 
-
-    /**
+    private String getRandomHowResponse(){
+        Random ra = new Random();
+        return randomHowResponses [ra.nextInt(randomHowResponses.length)];
+    }
+    
+    private String getRandomWhyResponse(){
+        Random ran = new Random();
+        return randomWhyResponse[ran.nextInt(randomWhyResponse.length)];
+    }
+    
+     /**
      * Pick a default response to use if nothing else fits.
      * @return a non-committal string
      */
@@ -287,7 +310,25 @@ public class Eleanor
     private String [] randomResponses = {"A woman is like a tea bag; you never know how strong it is until it's in hot water",
         "Do one thing every day that scares you.",
         "The future belongs to those who believe in the beauty of their dreams.",
-        "Many people will walk in and out of your life, but only true friends will leave footprints in your heart"
+        "Many people will walk in and out of your life, but only true friends will leave footprints in your heart",
+        "I flew with Amelia Earhart",
+        "Damm thats quite facinating",
+        "Can we do this a little bit later",
+        
+    };
+    
+    private String [] randomHowResponses = {
+        "Good",
+        "Not too good",
+        "Pretty bad",
+        "It's've been better"
+        
+    };
+    
+    private String [] randomWhyResponse = {
+        "Why not",
+        "Because",
+        "I said so",
     };
     
 }
