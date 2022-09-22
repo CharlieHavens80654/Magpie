@@ -24,7 +24,7 @@ public class Eleanor
     {
         return "Hello, let's talk.";
     }
-    
+
     /**
      * Gives a response to a user statement
      * 
@@ -45,35 +45,40 @@ public class Eleanor
             response = "Why so negative?";
         }
         else if (findKeyword(statement, "mother") >= 0
-                ||findKeyword(statement, "mom") >= 0)
+        ||findKeyword(statement, "mom") >= 0)
         {
             response = "My mother's name is Anne Hall Roosevelt";
         }else if (findKeyword(statement, "father") >= 0
-                ||findKeyword(statement, "dad") >= 0)
+        ||findKeyword(statement, "dad") >= 0)
         {   
             response = "My  father's name is Elliot Roosevelt";
         }else if (findKeyword(statement, "siblings") >= 0
-                ||findKeyword(statement, "sisters") >= 0
-                ||findKeyword(statement, "sister") >= 0
-                ||findKeyword(statement, "sibling") >= 0
-                ||findKeyword(statement, "brother") >= 0
-                ||findKeyword(statement, "brothers") >= 0)
+        ||findKeyword(statement, "sisters") >= 0
+        ||findKeyword(statement, "sister") >= 0
+        ||findKeyword(statement, "sibling") >= 0
+        ||findKeyword(statement, "brother") >= 0
+        ||findKeyword(statement, "brothers") >= 0)
         {   
             response = "I have brothers, Elliot and Gracie(Hall). Hall died of scalet fever. I have no sisters.";
-        }else if (findKeyword(statement, "What is your name") >= 0){
+        }else if (findKeyword(statement, "your name") >= 0
+                || findKeyword(statement, "Who are you")>= 0){
             response = "My name is Anna Eleanor Roosevelt, but I go by Eleanor";
         }else if (findKeyword(statement, "known for") >= 0
-                || findKeyword(statement, "famous")  >= 0){
+        || findKeyword(statement, "famous")  >= 0){
             response = "I helped draft the Universal Declaration of Human Rights. I was the first lady of the united states from 1933 to 1945 while my husband was president, and served as first chair on the UN human rights comitee";
         }else if (findKeyword(statement, "marry") >= 0
-                ||findKeyword(statement, "marriage") >= 0
-                ||findKeyword(statement, "husband") >= 0){
+        ||findKeyword(statement, "marriage") >= 0
+        ||findKeyword(statement, "husband") >= 0){
             response = "I married my husband Franklin Roosevelt in 1905";
         }else if (findKeyword(statement, "you born") >= 0
-                || findKeyword(statement, "live")>= 0
-                || findKeyword(statement, "old")>=0){
+        || findKeyword(statement, "live")>= 0
+        || findKeyword(statement, "old")>=0){
             response = "I was born in New York City on October 11th 1884 ";
-        }else if (findKeyword(statement, "languages") >= 0){
+        }else if (findKeyword(statement, "children") >0
+            ||(findKeyword(statement,"kids") >0)){
+            response = "I never had kids";    
+                }
+        else if (findKeyword(statement, "languages") >= 0){
             response = "I speak both English and French";
         }else if (findKeyword(statement, "sports") >= 0){
             response = "I played hockey, its my favorite sport";
@@ -81,6 +86,8 @@ public class Eleanor
             response = "I have 35 honary degrees from Russell Sage College, JJohn Marshall College of Law, and Oxford University";
         }else if (findKeyword(statement, "do") >= 0){
             response = "I love being a lizard person";
+        }else if (findKeyword(statement, "How much") >= 0){
+            response = getRandomHowMuchResponse();
         }else if (findKeyword(statement, "How") >= 0){
             response = getRandomHowResponse();
         }else if (findKeyword(statement, "Why") >= 0){
@@ -106,7 +113,7 @@ public class Eleanor
             int psn = findKeyword(statement, "you", 0);
 
             if (psn >= 0
-                    && findKeyword(statement, "me", psn) >= 0)
+            && findKeyword(statement, "me", psn) >= 0)
             {
                 response = transformYouMeStatement(statement);
             }
@@ -118,7 +125,7 @@ public class Eleanor
                 psn = findKeyword(statement, "i", 0);
 
                 if (psn >= 0
-                        && findKeyword(statement, "you", psn) >= 0)
+                && findKeyword(statement, "you", psn) >= 0)
                 {
                     response = transformIYouStatement(statement);
                 }
@@ -130,7 +137,7 @@ public class Eleanor
         }
         return response;
     }
-    
+
     /**
      * Take a statement with "I want to <something>." and transform it into 
      * "What would it mean to <something>?"
@@ -146,14 +153,13 @@ public class Eleanor
         if (lastChar.equals("."))
         {
             statement = statement.substring(0, statement
-                    .length() - 1);
+                .length() - 1);
         }
         int psn = findKeyword (statement, "I want to", 0);
         String restOfStatement = statement.substring(psn + 9).trim();
         return "What would it mean to " + restOfStatement + "?";
     }
 
-    
     /**
      * Take a statement with "I want <something>." and transform it into 
      * "Would you really be happy if you had <something>?"
@@ -169,13 +175,13 @@ public class Eleanor
         if (lastChar.equals("."))
         {
             statement = statement.substring(0, statement
-                    .length() - 1);
+                .length() - 1);
         }
         int psn = findKeyword (statement, "I want", 0);
         String restOfStatement = statement.substring(psn + 6).trim();
         return "Would you really be happy if you had " + restOfStatement + "?";
     }
-    
+
     /**
      * Take a statement with "you <something> me" and transform it into 
      * "What makes you think that I <something> you?"
@@ -191,16 +197,16 @@ public class Eleanor
         if (lastChar.equals("."))
         {
             statement = statement.substring(0, statement
-                    .length() - 1);
+                .length() - 1);
         }
-        
+
         int psnOfYou = findKeyword (statement, "you", 0);
         int psnOfMe = findKeyword (statement, "me", psnOfYou + 3);
-        
+
         String restOfStatement = statement.substring(psnOfYou + 3, psnOfMe).trim();
         return "What makes you think that I " + restOfStatement + " you?";
     }
-    
+
     /**
      * Take a statement with "I <something> you" and transform it into 
      * "Why do you <something> me?"
@@ -216,18 +222,16 @@ public class Eleanor
         if (lastChar.equals("."))
         {
             statement = statement.substring(0, statement
-                    .length() - 1);
+                .length() - 1);
         }
-        
+
         int psnOfI = findKeyword (statement, "I", 0);
         int psnOfYou = findKeyword (statement, "you", psnOfI);
-        
+
         String restOfStatement = statement.substring(psnOfI + 1, psnOfYou).trim();
         return "Why do you " + restOfStatement + " me?";
     }
-    
 
-    
     
     /**
      * Search for one word in phrase.  The search is not case sensitive.
@@ -243,7 +247,7 @@ public class Eleanor
         String phrase = statement.trim();
         //  The only change to incorporate the startPos is in the line below
         int psn = phrase.toLowerCase().indexOf(goal.toLowerCase(), startPos);
-        
+
         //  Refinement--make sure the goal isn't part of a word 
         while (psn >= 0) 
         {
@@ -257,22 +261,22 @@ public class Eleanor
             {
                 after = phrase.substring(psn + goal.length(), psn + goal.length() + 1).toLowerCase();
             }
-            
+
             //  If before and after aren't letters, we've found the word
             if (((before.compareTo ("a") < 0 ) || (before.compareTo("z") > 0))  //  before is not a letter
-                    && ((after.compareTo ("a") < 0 ) || (after.compareTo("z") > 0)))
+            && ((after.compareTo ("a") < 0 ) || (after.compareTo("z") > 0)))
             {
                 return psn;
             }
-            
+
             //  The last position didn't work, so let's find the next, if there is one.
             psn = phrase.indexOf(goal.toLowerCase(), psn + 1);
-            
+
         }
-        
+
         return -1;
     }
-    
+
     /**
      * Search for one word in phrase.  The search is not case sensitive.
      * This method will check that the given goal is not a substring of a longer string
@@ -285,19 +289,23 @@ public class Eleanor
     {
         return findKeyword (statement, goal, 0);
     }
-    
+
+    private String getRandomHowMuchResponse(){
+        Random rand = new Random();
+        return randomHowMuchResponses [rand.nextInt(randomHowMuchResponses.length)];
+    }
 
     private String getRandomHowResponse(){
         Random ra = new Random();
         return randomHowResponses [ra.nextInt(randomHowResponses.length)];
     }
-    
+
     private String getRandomWhyResponse(){
         Random ran = new Random();
         return randomWhyResponse[ran.nextInt(randomWhyResponse.length)];
     }
-    
-     /**
+
+    /**
      * Pick a default response to use if nothing else fits.
      * @return a non-committal string
      */
@@ -306,29 +314,36 @@ public class Eleanor
         Random r = new Random ();
         return randomResponses [r.nextInt(randomResponses.length)];
     }
-    
+
     private String [] randomResponses = {"A woman is like a tea bag; you never know how strong it is until it's in hot water",
-        "Do one thing every day that scares you.",
-        "The future belongs to those who believe in the beauty of their dreams.",
-        "Many people will walk in and out of your life, but only true friends will leave footprints in your heart",
-        "I flew with Amelia Earhart",
-        "Damm thats quite facinating",
-        "Can we do this a little bit later",
-        
-    };
-    
+            "Do one thing every day that scares you.",
+            "The future belongs to those who believe in the beauty of their dreams.",
+            "Many people will walk in and out of your life, but only true friends will leave footprints in your heart",
+            "I flew with Amelia Earhart",
+            "Damm thats quite facinating",
+            "Can we do this a little bit later",
+
+        };
+
+    private String [] randomHowMuchResponses = {
+            "some",
+            "not a lot",
+            "decent bit",
+            "a lot"
+        };
+
     private String [] randomHowResponses = {
-        "Good",
-        "Not too good",
-        "Pretty bad",
-        "It's've been better"
-        
-    };
-    
+            "Good",
+            "Not too good",
+            "Pretty bad",
+            "It's've been better"
+
+        };
+
     private String [] randomWhyResponse = {
-        "Why not",
-        "Because",
-        "I said so",
-    };
-    
+            "Why not",
+            "Because",
+            "I said so",
+        };
+
 }
